@@ -402,6 +402,14 @@ public class SingularityConfiguration extends Configuration {
   @JsonProperty("crashLoop")
   private CrashLoopConfiguration crashLoopConfiguration = new CrashLoopConfiguration();
 
+  private double preferredSlaveScaleFactor = 1.5;
+
+  // high cpu slave, based on cpu to memory ratio
+  private double highCpuSlaveCutOff = 1.5; //TODO
+
+  // high memory slave, based on cpu to memory ratio
+  private double highMemorySlaveCutOff = 0.5; //TODO
+
   public long getAskDriverToKillTasksAgainAfterMillis() {
     return askDriverToKillTasksAgainAfterMillis;
   }
@@ -1699,5 +1707,29 @@ public class SingularityConfiguration extends Configuration {
 
   public void setCrashLoopConfiguration(CrashLoopConfiguration crashLoopConfiguration) {
     this.crashLoopConfiguration = crashLoopConfiguration;
+  }
+
+  public double getPreferredSlaveScaleFactor() {
+    return preferredSlaveScaleFactor;
+  }
+
+  public void setPreferredSlaveScaleFactor(double preferredSlaveScaleFactor) {
+    this.preferredSlaveScaleFactor = preferredSlaveScaleFactor;
+  }
+
+  public double getHighCpuSlaveCutOff() {
+    return highCpuSlaveCutOff;
+  }
+
+  public void setHighCpuSlaveCutOff(double highCpuSlaveCutOff) {
+    this.highCpuSlaveCutOff = highCpuSlaveCutOff;
+  }
+
+  public double getHighMemorySlaveCutOff() {
+    return highMemorySlaveCutOff;
+  }
+
+  public void setHighMemorySlaveCutOff(double highMemorySlaveCutOff) {
+    this.highMemorySlaveCutOff = highMemorySlaveCutOff;
   }
 }
