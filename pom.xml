@@ -385,7 +385,7 @@
         <artifactId>rxjava</artifactId>
         <version>${dep.rxJava.version}</version>
       </dependency>
-
+	
       <dependency>
         <groupId>com.squareup.tape2</groupId>
         <artifactId>tape</artifactId>

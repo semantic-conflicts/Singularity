@@ -2,7 +2,7 @@ import { buildApiAction, buildJsonApiAction } from './base';
 
 export const FetchRequests = buildApiAction(
   'FETCH_REQUESTS',
-  {url: '/requests'}
+  {url: '/requests?useWebCache=true'}
 );
 
 export const FetchRequestIds = buildApiAction(
@@ -31,7 +31,7 @@ export const FetchRequestsInState = buildApiAction(
 export const FetchRequest = buildApiAction(
   'FETCH_REQUEST',
   (requestId, renderNotFoundIf404) => ({
-    url: `/requests/request/${requestId}`,
+    url: `/requests/request/${requestId}?useWebCache=true`,
     renderNotFoundIf404,
     catchStatusCodes: [404]
   }),
@@ -167,3 +167,31 @@ export const CancelRequestBounce = buildJsonApiAction(
     url: `/requests/request/${requestId}/bounce`
   })
 );
+
+export const FetchRequestShuffleOptOut = buildApiAction(
+  'FETCH_REQUEST_SHUFFLE_OPT_OUT',
+  (requestId, renderNotFoundIf404) => ({
+    url: `/shuffle/blacklist/${requestId}`,
+    renderNotFoundIf404,
+    catchStatusCodes: [404]
+  }),
+  (requestId) => requestId
+);
+
+export const EnableRequestShuffleOptOut = buildJsonApiAction(
+  'ENABLE_REQUEST_SHUFFLE_OPT_OUT',
+  'POST',
+  (requestId) => ({
+    url: `/shuffle/blacklist/${requestId}`,
+  })
+);
+
+export const DisableRequestShuffleOptOut = buildJsonApiAction(
+  'DISABLE_REQUEST_SHUFFLE_OPT_OUT',
+  'DELETE',
+  (requestId) => ({
+    url: `/shuffle/blacklist/${requestId}`,
+  })
+);
+
+

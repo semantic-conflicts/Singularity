@@ -110,9 +110,17 @@ public class SingularityValidator {
   private final PriorityManager priorityManager;
   private final DisasterManager disasterManager;
   private final SlaveManager slaveManager;
+  private final SingularityConfiguration singularityConfiguration;
 
   @Inject
-  public SingularityValidator(SingularityConfiguration configuration, DeployHistoryHelper deployHistoryHelper, PriorityManager priorityManager, DisasterManager disasterManager, SlaveManager slaveManager, UIConfiguration uiConfiguration) {
+  public SingularityValidator(
+      SingularityConfiguration configuration,
+      DeployHistoryHelper deployHistoryHelper,
+      PriorityManager priorityManager,
+      DisasterManager disasterManager,
+      SlaveManager slaveManager,
+      UIConfiguration uiConfiguration
+  ) {
     this.maxDeployIdSize = configuration.getMaxDeployIdSize();
     this.maxRequestIdSize = configuration.getMaxRequestIdSize();
     this.maxUserIdSize = configuration.getMaxUserIdSize();
@@ -155,6 +163,7 @@ public class SingularityValidator {
 
     this.disasterManager = disasterManager;
     this.slaveManager = slaveManager;
+    this.singularityConfiguration = configuration;
   }
 
   public SingularityRequest checkSingularityRequest(SingularityRequest request, Optional<SingularityRequest> existingRequest, Optional<SingularityDeploy> activeDeploy,
@@ -617,7 +626,6 @@ public class SingularityValidator {
     String result = Hashing.sha256().newHasher().putLong(id.getLeastSignificantBits()).putLong(id.getMostSignificantBits()).hash().toString();
     return result.substring(0, deployIdLength);
   }
-
   private void checkDocker(SingularityDeploy deploy) {
     if (deploy.getResources().isPresent() && deploy.getContainerInfo().get().getDocker().isPresent()) {
       final SingularityDockerInfo dockerInfo = deploy.getContainerInfo().get().getDocker().get();

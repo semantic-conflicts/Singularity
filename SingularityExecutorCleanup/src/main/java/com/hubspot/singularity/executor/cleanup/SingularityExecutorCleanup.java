@@ -24,6 +24,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import javax.ws.rs.HEAD;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -478,7 +480,7 @@ public class SingularityExecutorCleanup {
           new SimpleProcessManager(LOG).runCommand(ImmutableList.<String> of(cleanupConfiguration.getCompressionType().getCommand(), path.toString()));
         } catch (InterruptedException | ProcessFailedException e) {
           LOG.error("Failed to {} {}", cleanupConfiguration.getCompressionType(), path, e);
-          exceptionNotifier.notify(String.format("Failed to gzip (%s)", e.getMessage()), e, ImmutableMap.of("file", path.toString()));
+          exceptionNotifier.notify(String.format("Failed to %s %s (%s)", cleanupConfiguration.getCompressionType(), path, e.getMessage()), e, ImmutableMap.of("file", path.toString()));
         }
       } else {
         LOG.debug("Didn't find matched empty {} file for {}", cleanupConfiguration.getCompressionType(), path);

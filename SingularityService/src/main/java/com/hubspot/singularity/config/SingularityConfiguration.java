@@ -93,6 +93,7 @@ public class SingularityConfiguration extends Configuration {
 
   private int maxTasksToShufflePerHost = 2;
 
+  @Deprecated
   private List<String> doNotShuffleRequests = new ArrayList<>();
 
   private int minutesBeforeNewTaskEligibleForShuffle = 15;
@@ -351,11 +352,6 @@ public class SingularityConfiguration extends Configuration {
 
   private boolean taskHistoryQueryUsesZkFirst = false;
 
-  @JsonProperty("disasterDetection")
-  @NotNull
-  @Valid
-  private DisasterDetectionConfiguration disasterDetection = new DisasterDetectionConfiguration();
-
   @Min(0)
   @Max(1)
   private double defaultTaskPriorityLevel = 0.3;
@@ -369,6 +365,11 @@ public class SingularityConfiguration extends Configuration {
   @Min(0)
   @Max(5)
   private double schedulerPriorityWeightFactor = 1.0;
+
+  @JsonProperty("disasterDetection")
+  @NotNull
+  @Valid
+  private DisasterDetectionConfiguration disasterDetection = new DisasterDetectionConfiguration();
 
   private boolean rebalanceRacksOnScaleDown = false;
 
@@ -403,6 +404,14 @@ public class SingularityConfiguration extends Configuration {
 
   @JsonProperty("crashLoop")
   private CrashLoopConfiguration crashLoopConfiguration = new CrashLoopConfiguration();
+
+  private double preferredSlaveScaleFactor = 1.5;
+
+  // high cpu slave, based on cpu to memory ratio
+  private double highCpuSlaveCutOff = 1.5; //TODO
+
+  // high memory slave, based on cpu to memory ratio
+  private double highMemorySlaveCutOff = 0.5; //TODO
 
   public long getAskDriverToKillTasksAgainAfterMillis() {
     return askDriverToKillTasksAgainAfterMillis;
@@ -1401,14 +1410,6 @@ public class SingularityConfiguration extends Configuration {
     this.taskLabelForLoadBalancerUpstreamGroup = taskLabelForLoadBalancerUpstreamGroup;
   }
 
-  public DisasterDetectionConfiguration getDisasterDetection() {
-    return disasterDetection;
-  }
-
-  public void setDisasterDetection(DisasterDetectionConfiguration disasterDetection) {
-    this.disasterDetection = disasterDetection;
-  }
-
   public double getDefaultTaskPriorityLevel() {
     return defaultTaskPriorityLevel;
   }
@@ -1439,6 +1440,14 @@ public class SingularityConfiguration extends Configuration {
 
   public void setSchedulerPriorityWeightFactor(double schedulerPriorityWeightFactor) {
     this.schedulerPriorityWeightFactor = schedulerPriorityWeightFactor;
+  }
+
+  public DisasterDetectionConfiguration getDisasterDetection() {
+    return disasterDetection;
+  }
+
+  public void setDisasterDetection(DisasterDetectionConfiguration disasterDetection) {
+    this.disasterDetection = disasterDetection;
   }
 
   public boolean isRebalanceRacksOnScaleDown() {
@@ -1709,5 +1718,29 @@ public class SingularityConfiguration extends Configuration {
 
   public void setCrashLoopConfiguration(CrashLoopConfiguration crashLoopConfiguration) {
     this.crashLoopConfiguration = crashLoopConfiguration;
+  }
+
+  public double getPreferredSlaveScaleFactor() {
+    return preferredSlaveScaleFactor;
+  }
+
+  public void setPreferredSlaveScaleFactor(double preferredSlaveScaleFactor) {
+    this.preferredSlaveScaleFactor = preferredSlaveScaleFactor;
+  }
+
+  public double getHighCpuSlaveCutOff() {
+    return highCpuSlaveCutOff;
+  }
+
+  public void setHighCpuSlaveCutOff(double highCpuSlaveCutOff) {
+    this.highCpuSlaveCutOff = highCpuSlaveCutOff;
+  }
+
+  public double getHighMemorySlaveCutOff() {
+    return highMemorySlaveCutOff;
+  }
+
+  public void setHighMemorySlaveCutOff(double highMemorySlaveCutOff) {
+    this.highMemorySlaveCutOff = highMemorySlaveCutOff;
   }
 }
