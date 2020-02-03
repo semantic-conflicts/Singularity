@@ -402,9 +402,6 @@ public class SingularityConfiguration extends Configuration {
 
   private Optional<Integer> expectedRacksCount = Optional.empty();
 
-  @JsonProperty("crashLoop")
-  private CrashLoopConfiguration crashLoopConfiguration = new CrashLoopConfiguration();
-
   private double preferredSlaveScaleFactor = 1.5;
 
   // high cpu slave, based on cpu to memory ratio
@@ -412,6 +409,11 @@ public class SingularityConfiguration extends Configuration {
 
   // high memory slave, based on cpu to memory ratio
   private double highMemorySlaveCutOff = 0.5; //TODO
+
+  private long reconcileLaunchAfterMillis = TimeUnit.MINUTES.toMillis(3);
+
+  @JsonProperty("crashLoop")
+  private CrashLoopConfiguration crashLoopConfiguration = new CrashLoopConfiguration();
 
   public long getAskDriverToKillTasksAgainAfterMillis() {
     return askDriverToKillTasksAgainAfterMillis;
@@ -1704,22 +1706,6 @@ public class SingularityConfiguration extends Configuration {
     this.sqlFallBackToBytesFields = sqlFallBackToBytesFields;
   }
 
-  public Optional<Integer> getExpectedRacksCount() {
-    return expectedRacksCount;
-  }
-
-  public void setExpectedRacksCount(Optional<Integer> expectedRacksCount) {
-    this.expectedRacksCount = expectedRacksCount;
-  }
-
-  public CrashLoopConfiguration getCrashLoopConfiguration() {
-    return crashLoopConfiguration;
-  }
-
-  public void setCrashLoopConfiguration(CrashLoopConfiguration crashLoopConfiguration) {
-    this.crashLoopConfiguration = crashLoopConfiguration;
-  }
-
   public double getPreferredSlaveScaleFactor() {
     return preferredSlaveScaleFactor;
   }
@@ -1742,5 +1728,29 @@ public class SingularityConfiguration extends Configuration {
 
   public void setHighMemorySlaveCutOff(double highMemorySlaveCutOff) {
     this.highMemorySlaveCutOff = highMemorySlaveCutOff;
+  }
+
+  public Optional<Integer> getExpectedRacksCount() {
+    return expectedRacksCount;
+  }
+
+  public void setExpectedRacksCount(Optional<Integer> expectedRacksCount) {
+    this.expectedRacksCount = expectedRacksCount;
+  }
+
+  public CrashLoopConfiguration getCrashLoopConfiguration() {
+    return crashLoopConfiguration;
+  }
+
+  public void setCrashLoopConfiguration(CrashLoopConfiguration crashLoopConfiguration) {
+    this.crashLoopConfiguration = crashLoopConfiguration;
+  }
+
+  public long getReconcileLaunchAfterMillis() {
+    return reconcileLaunchAfterMillis;
+  }
+
+  public void setReconcileLaunchAfterMillis(long reconcileLaunchAfterMillis) {
+    this.reconcileLaunchAfterMillis = reconcileLaunchAfterMillis;
   }
 }
