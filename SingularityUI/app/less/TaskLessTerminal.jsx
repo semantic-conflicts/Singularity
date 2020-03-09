@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { withRouter } from 'react-router';
 import Messenger from 'messenger';
 import { Terminal } from 'xterm';
 
@@ -21,7 +22,23 @@ class TaskLessTerminal extends Component {
     const url = `wss://${host}:${window.config.lessTerminalPort}/api/v1/tasks/${this.props.taskId}/exec/less?${this.getArguments(terminal)}`;
     const protocols = ['Bearer', Utils.getAuthToken()];
 
-    return new WebSocket(url, protocols);
+    const ws = new WebSocket(url, protocols);
+    const wsRedirect = (event) => {
+      this.props.router.push(`/task/${this.props.taskId}`);
+
+      Messenger().info({
+        message: `Websocket session closed successfully.`,
+        hideAfter: 3,
+      });
+    };
+    
+    // order of these two statements ensures the redirect isn't removed on pageload
+    this.props.router.listen((location, action) => {
+      ws.removeEventListener('close', wsRedirect);
+    });
+    ws.addEventListener('close', wsRedirect);
+
+    return ws;
   }
 
   /** @param {Terminal} terminal */
@@ -67,7 +84,7 @@ class TaskLessTerminal extends Component {
   
   /** @param {Terminal} terminal */
   terminalEtcSetup(terminal) {
-    const inlineNumberRegex = /^\s*(\d+)/;
+    const inlineNumberRegex = /^\s+(\d+)/;
     const promptRegex = /^(END )?([?\d]+)\/([?\d]+)%\/(\d+)b/;
 
     // terminal.onSelectionChange(() => {
@@ -138,4 +155,4 @@ TaskLessTerminal.propTypes = {
 TaskLessTerminal.defaultProps = {
 };
 
-export default TaskLessTerminal;
+export default withRouter(TaskLessTerminal);
