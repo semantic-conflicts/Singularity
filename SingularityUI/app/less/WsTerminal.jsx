@@ -22,14 +22,11 @@ class WsTerminal extends Component {
     this.fitAddon = new FitAddon();
     this.terminal.loadAddon(this.fitAddon);
     this.fitAddon.fit();
-    // this.terminal.resize(2048, this.terminal.rows);
+    // this.terminal.resize(1024, this.terminal.rows);
 
     this.ws = this.props.terminalToWebSocket(this.terminal);
     this.wsAttach = new AttachAddon(this.ws);
     this.terminal.loadAddon(this.wsAttach);
-
-    console.log(this.ws);
-    console.log(this.terminal);
 
     // in the typical cannot connect to agent case, error is fired before close
     this.ws.addEventListener('error', event => {

@@ -48,3 +48,19 @@ export function jumpToBottom(terminal) {
   sigint(terminal);
   terminal.paste('\rG');
 }
+
+/**
+ * @param {Terminal} terminal
+ * @param {WheelEvent} event
+ */
+export function horizontalScroll(terminal, event) {
+  event.preventDefault();
+
+  if (event.deltaX === 0) {
+    return;
+  } else if (event.deltaX > 0) {
+    terminal.paste(`${event.deltaX}\x1bOC`);
+  } else {
+    terminal.paste(`${event.deltaX}\x1bOD`);
+  }
+}
